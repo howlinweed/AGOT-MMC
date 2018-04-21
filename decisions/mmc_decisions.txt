@@ -1,0 +1,131 @@
+# Title decisions are possible vs _all_ titles and are shown in the Title Diplomacy View, not the Intrigue View. The taker is in the FROM scope.
+#
+# filter = [capital/primary_title/owned/vassal_owned/sub_realm_owned/realm_owned/dynasty_owned/all]
+# ai_target_filter = [capital/primary_title/owned/vassal_owned/sub_realm_owned/realm_owned/dynasty_owned/all] (which titles for which the AI evaluates the decision.)
+#	owned: all titles owned by the AI
+#	vassal_owned: all titles owned by direct vassal rulers of the AI's employer
+#	sub_realm_owned: all titles below the AI's employer
+#	realm_owned: all titles in the same top realm as the AI
+#	dynasty_owned: all titles owned by members of the same dynasty
+#	all: all titles (Avoid if possible. VERY CPU-HEAVY!)
+#
+
+title_decisions = {
+	
+	make_military = {
+		filter = owned
+		ai_target_filter = primary_title
+		ai = no
+		
+		from_potential = {
+			ai = no
+			higher_real_tier_than = duke
+			num_of_baron_titles > 1
+		}
+		
+		potential = {
+			tier = baron
+			OR = {
+				holding_type = castle
+				holding_type = city
+			}
+			owner = { character = FROM }
+			NOT = { FROM = { capital_holding = { title = ROOT } } }
+			custom_tooltip = {
+				text = TOOLTIP_MMC_make_military
+				hidden_tooltip = {
+					NOT = { has_title_flag = military_command }
+				}
+			}
+		}
+		
+		allow = {
+			tier = baron
+			OR = {
+				holding_type = castle
+				holding_type = city
+			}
+			owner = {
+				character = FROM
+				NOT = { capital_holding = { title = ROOT } }
+				higher_real_tier_than = duke
+				num_of_baron_titles > 1
+			}
+			custom_tooltip = {
+				text = TOOLTIP_MMC_make_military
+				hidden_tooltip = {
+					NOT = { has_title_flag = military_command }
+				}
+			}
+		}
+		
+		effect = {
+			save_event_target_as = target_make_military
+			owner = { character_event = { id = mmc.10 } }
+		}
+		
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	
+	unmake_military = {
+		filter = realm_owned
+		ai_target_filter = primary_title
+		ai = no
+		
+		from_potential = {
+			ai = no
+		}
+		
+		potential = {
+			tier = baron
+			OR = {
+				holding_type = castle
+				holding_type = city
+			}
+			owner = {
+				OR = {
+					character = FROM
+					any_liege = { character = FROM }
+				}
+			}
+			custom_tooltip = {
+				text = TOOLTIP_MMC_unmake_military
+				hidden_tooltip = {
+					has_title_flag = new_military_command
+				}
+			}
+		}
+		
+		allow = {
+			tier = baron
+			OR = {
+				holding_type = castle
+				holding_type = city
+			}
+			owner = {
+				OR = {
+					character = FROM
+					any_liege = { character = FROM }
+				}
+			}
+			custom_tooltip = {
+				text = TOOLTIP_MMC_unmake_military
+				hidden_tooltip = {
+					has_title_flag = new_military_command
+				}
+			}
+		}
+		
+		effect = {
+			save_event_target_as = target_unmake_military
+			owner = { character_event = { id = mmc.20 } }
+		}
+		
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	
+}

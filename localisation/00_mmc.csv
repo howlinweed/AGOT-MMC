@@ -1,0 +1,19 @@
+#CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+make_military;Convert to military command;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+# make_military_named;Convert to military command;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+make_military_desc;Convert to military command;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+unmake_military;Convert to regular holding;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+# unmake_military_named;Convert to regular holding;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+unmake_military_desc;Convert to regular holding;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTDESC_MMC_10;[From.GetName] will be converted to a military command. Doing so may displease some of your dynasty members and vassals.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTOPT_A_MMC_10;Convert [From.GetName]to a military command.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTOPT_B_MMC_10;No.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTDESC_MMC_25.1;[FromFrom.GetName] will be converted back to a regular holding.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTDESC_MMC_25.2;[FromFrom.GetName] will be converted back to a regular holding. This will make [From.GetBestName] very pleased.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTOPT_A_MMC_25;Convert [FromFrom.GetName] to a regular holding.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTOPT_B_MMC_25;Convert [FromFrom.GetName] to a regular holding.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTOPT_C_MMC_25;No.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+TOOLTIP_MMC_convert_regular;[target_unmake_military.GetName] is converted to a regular holding.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+TOOLTIP_MMC_convert_military;[target_make_military.GetName] is converted to a military command.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+TOOLTIP_MMC_unmake_military;Must be a temporary military command.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+TOOLTIP_MMC_make_military;Must not already be a military command.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
