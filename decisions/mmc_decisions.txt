@@ -14,7 +14,7 @@ settlement_decisions = {
 	
 	make_military = {
 		filter = owned
-		ai_target_filter = primary_title
+		ai_target_filter = capital
 		ai = no
 		# FROM: decision taker (player)
 		# ROOT: targeted title
@@ -114,7 +114,7 @@ settlement_decisions = {
 	
 	unmake_military = {
 		filter = realm_owned
-		ai_target_filter = primary_title
+		ai_target_filter = capital
 		ai = no
 		
 		from_potential = {
