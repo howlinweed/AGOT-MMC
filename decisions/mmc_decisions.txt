@@ -1,66 +1,109 @@
-# Title decisions are possible vs _all_ titles and are shown in the Title Diplomacy View, not the Intrigue View. The taker is in the FROM scope.
+# Settlement decisions are possible vs _all_ settlements and are shown in the Settlement Diplomacy View, not the Intrigue View. The taker is in the FROM scope.
 #
-# filter = [capital/primary_title/owned/vassal_owned/sub_realm_owned/realm_owned/dynasty_owned/all]
-# ai_target_filter = [capital/primary_title/owned/vassal_owned/sub_realm_owned/realm_owned/dynasty_owned/all] (which titles for which the AI evaluates the decision.)
-#	owned: all titles owned by the AI
-#	vassal_owned: all titles owned by direct vassal rulers of the AI's employer
-#	sub_realm_owned: all titles below the AI's employer
-#	realm_owned: all titles in the same top realm as the AI
-#	dynasty_owned: all titles owned by members of the same dynasty
-#	all: all titles (Avoid if possible. VERY CPU-HEAVY!)
+# filter = [capital/owned/vassal_owned/sub_realm_owned/realm_owned/dynasty_owned/all]
+# ai_target_filter = [capital/owned/vassal_owned/sub_realm_owned/realm_owned/dynasty_owned/all] (which settlements for which the AI evaluates the decision.)
+#	owned: all settlements owned by the AI
+#	vassal_owned: all settlements owned by direct vassal rulers of the AI's employer
+#	sub_realm_owned: all settlements below the AI's employer
+#	realm_owned: all settlements in the same top realm as the AI
+#	dynasty_owned: all settlements owned by members of the same dynasty
+#	all: all settlements (Avoid if possible. VERY CPU-HEAVY!)
 #
 
-title_decisions = {
+settlement_decisions = {
 	
 	make_military = {
 		filter = owned
 		ai_target_filter = primary_title
 		ai = no
-		
+		# FROM: decision taker (player)
+		# ROOT: targeted title
 		from_potential = {
 			ai = no
 			higher_real_tier_than = duke
-			num_of_baron_titles > 1
-		}
-		
-		potential = {
-			tier = baron
 			OR = {
-				holding_type = castle
-				holding_type = city
-			}
-			owner = { character = FROM }
-			NOT = { FROM = { capital_holding = { title = ROOT } } }
-			custom_tooltip = {
-				text = TOOLTIP_MMC_make_military
-				hidden_tooltip = {
-					NOT = { has_title_flag = military_command }
+				num_of_baron_titles > 0
+				AND = {
+					num_of_count_titles > 0
+					any_demesne_title = {
+						tier = count
+						location = {
+							num_of_settlements == 1
+							num_of_empty_holdings < 1
+							NOT = { has_settlement_construction = yes }
+							is_island = yes
+						}
+					}
 				}
 			}
 		}
 		
-		allow = {
-			tier = baron
+		potential = {
 			OR = {
 				holding_type = castle
 				holding_type = city
 			}
-			owner = {
-				character = FROM
-				NOT = { capital_holding = { title = ROOT } }
-				higher_real_tier_than = duke
-				num_of_baron_titles > 1
+			location = {
+				OR = {
+					AND = { # Islands with a single holding are allowed
+						capital_holding = { title = ROOT }
+						num_of_settlements == 1
+						num_of_empty_holdings < 1
+						NOT = { has_settlement_construction = yes }
+						is_island = yes
+					}
+					NOT = { capital_holding = { title = ROOT } }
+				}
 			}
+			owner = { character = FROM }
+			NOT = { FROM = { capital_holding = { title = ROOT } } }
+			NOR = {
+				has_title_flag = military_command
+				county = { has_title_flag = military_command }
+			}
+			# custom_tooltip = {
+				# text = TOOLTIP_MMC_make_military
+				# hidden_tooltip = {
+					# NOT = { has_title_flag = military_command }
+				# }
+			# }
+		}
+		
+		allow = {
+			# OR = {
+				# holding_type = castle
+				# holding_type = city
+			# }
+			# owner = {
+				# character = FROM
+				# NOT = { capital_holding = { title = ROOT } }
+				# higher_real_tier_than = duke
+				# num_of_baron_titles > 0
+			# }
+			# NOT = { capital_holding = { title = ROOT } }
 			custom_tooltip = {
 				text = TOOLTIP_MMC_make_military
 				hidden_tooltip = {
-					NOT = { has_title_flag = military_command }
+					NOR = {
+						has_title_flag = military_command
+						county = { has_title_flag = military_command }
+					}
 				}
 			}
 		}
 		
 		effect = {
-			save_event_target_as = target_make_military
+			if = {
+				limit = {
+					location = {
+						capital_holding = { title = ROOT }
+					}
+				}
+				county = { save_event_target_as = target_make_military }
+			}
+			else = {
+				save_event_target_as = target_make_military
+			}
 			owner = { character_event = { id = mmc.10 } }
 		}
 		
@@ -79,7 +122,6 @@ title_decisions = {
 		}
 		
 		potential = {
-			tier = baron
 			OR = {
 				holding_type = castle
 				holding_type = city
@@ -87,39 +129,39 @@ title_decisions = {
 			owner = {
 				OR = {
 					character = FROM
-					any_liege = { character = FROM }
+					is_liege_or_above = FROM
 				}
 			}
-			custom_tooltip = {
-				text = TOOLTIP_MMC_unmake_military
-				hidden_tooltip = {
-					has_title_flag = new_military_command
-				}
+			OR = {
+				has_title_flag = new_military_command
+				county = { has_title_flag = new_military_command }
 			}
 		}
 		
 		allow = {
-			tier = baron
-			OR = {
-				holding_type = castle
-				holding_type = city
-			}
-			owner = {
-				OR = {
-					character = FROM
-					any_liege = { character = FROM }
-				}
-			}
 			custom_tooltip = {
 				text = TOOLTIP_MMC_unmake_military
 				hidden_tooltip = {
-					has_title_flag = new_military_command
+					OR = {
+						has_title_flag = new_military_command
+						county = { has_title_flag = new_military_command }
+					}
 				}
 			}
 		}
 		
 		effect = {
-			save_event_target_as = target_unmake_military
+			if = {
+				limit = {
+					location = {
+						capital_holding = { title = ROOT }
+					}
+				}
+				county = { save_event_target_as = target_unmake_military }
+			}
+			else = {
+				save_event_target_as = target_unmake_military
+			}
 			owner = { character_event = { id = mmc.20 } }
 		}
 		
