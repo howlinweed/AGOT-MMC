@@ -1,0 +1,60 @@
+########################################################
+# MINOR TITLES
+# Characters can have any number of these
+########################################################
+#	grant_limit: Max number of holders.
+#	realm_in_name: Append the name of the country after the title (Queen [of Sweden])
+#	allowed_to_hold: conditions for the character to hold the title
+#	allowed_to_grant: conditions for a ruler to grant the title
+#	regent: This is the title for regents (not really "minor")
+#	gain_effect: fires when the title is granted
+#	lose_effect: fires when a title is lost through most causes
+#	retire_effect: fires when a title is lost due to the character stepping down
+#	death_effect: fires when a title is lost due to the character dying
+#	message: should fire a message to the its owner when set
+#	The other fields are all character modifiers.
+
+########################################################
+# Marquis, or however it's splet
+########################################################
+
+title_mmc_marquis_dornish_marshes = {
+	dignity = 0.3
+	grant_limit = 1
+	opinion_effect = 1
+	
+	monthly_prestige = 0.20
+	
+	attribute = martial
+	
+	allowed_to_hold = {
+		has_landed_title = d_dornish_marches
+		liege = {
+			OR = {
+				has_landed_title = k_stormlands
+				has_landed_title = e_stormlands
+			}
+		}
+	}
+	
+	allowed_to_grant = {
+		OR = {
+			has_landed_title = k_stormlands
+			has_landed_title = e_stormlands
+		}
+	}
+	
+	gain_effect = {
+	
+	}
+	
+	lose_effect = {
+	
+	}
+	
+	ai_will_do = {
+		factor = 0
+	}
+	
+	message = no
+}
