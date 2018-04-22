@@ -17,5 +17,11 @@ TOOLTIP_MMC_convert_regular;[target_unmake_military.GetName] is converted to a r
 TOOLTIP_MMC_convert_military;[target_make_military.GetName] is converted to a military command.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
 TOOLTIP_MMC_unmake_military;Must be a temporary military command.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
 TOOLTIP_MMC_make_military;Must not already be a military command.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
-title_mmc_marquis_dornish_marshes;Marquis;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+title_mmc_marquis_dornish_marshes;Marquis of The Dornish Marches;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
 title_mmc_marquis_dornish_marshes_desc;The Marquis is responsible for defending a realm's border provinces.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+fortified_marches;Fortified Marches;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+fortified_marches_desc;This province has been fortified with trenches and other anachronistic items.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTDESC_MMC_100;To the [Root.GetComplimentAdjective] [Root.GetTitledFirstName],\n\nMy [Root.GetLordLady], I dutifully accept the responsibility of defending [Root.PrimaryTitle.GetBaseName]. Those [target_enemy_schmuck.GetInsultAdjective] [target_enemy_schmuck.PrimaryTitle.GetAdjective] [target_enemy_schmuck.GetInsultNoun] will never overcome the defensives of [From.PrimaryTitle.GetBaseName].\n\nSigned,\n[From.GetTitledName];FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTOPT_OK_MMC_100;Excellent.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+TOOLTIPmmcOK.10;[From.GetTitledFirstName] will start working on improving the defenses in [From.GetHerHis] realm.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTDESC_MMC_115;To the [Root.GetComplimentAdjective] [Root.GetTitledFirstName],\n\nMy [Root.GetLordLady], after many months we have finished the fortifications in [FromFrom.GetName]. We are stronger and more prepared than ever.\n\nSigned,\n[From.GetTitledName];FRENCH;GERMAN;;SPANISH;;;;;;;;;x

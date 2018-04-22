@@ -22,6 +22,7 @@ title_mmc_marquis_dornish_marshes = {
 	dignity = 0.3
 	grant_limit = 1
 	opinion_effect = 1
+	realm_in_name = no
 	
 	monthly_prestige = 0.20
 	
@@ -45,7 +46,7 @@ title_mmc_marquis_dornish_marshes = {
 	}
 	
 	gain_effect = {
-	
+		character_event = { id = mmc.100 days = 1 }
 	}
 	
 	lose_effect = {

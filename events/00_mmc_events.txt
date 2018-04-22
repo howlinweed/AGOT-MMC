@@ -254,3 +254,211 @@ character_event = { #This event converts a non-historical military command into 
 	}
 
 }
+
+character_event = { # Used to ping to the granter
+	id = mmc.100
+	is_triggered_only = yes # fired title_mmc_marquis_dornish_marshes gain_effect
+	hide_window = yes
+	# Stack when fired by title grant
+	# This - title holder
+	# ROOT - title holder
+	# FROM - title holder
+	# FROMFROM - title granter
+	
+	trigger = {
+		has_minor_title = title_mmc_marquis_dornish_marshes
+	}
+	
+	immediate = {
+		log = "Debug: event mmc.100"
+		print_scope_effect = yes
+		if = { # Try and find some random schmuck we can hate on
+			limit = {
+				any_realm_title = {
+					location = {
+						any_neighbor_province = {
+							NOR = {
+								county = { same_realm = ROOT }
+								culture = ROOT
+							}
+						}
+					}
+				}
+			}
+			random_realm_title = {
+				location = {
+					random_neighbor_province = {
+						limit = {
+							NOR = {
+								county = { same_realm = ROOT }
+								culture = ROOT
+							}
+						}
+						owner = {
+							top_liege = {
+								log = "Debug: The [This.GetInsultAdjective] [This.GetBestName] ([This.GetID])"
+								save_event_target_as = target_enemy_schmuck
+							}
+						}
+					}
+				}
+			}
+		}
+		else_if = { # Try and find some random schmuck we can hate on
+			limit = {
+				any_realm_title = {
+					location = {
+						any_neighbor_province = {
+							NOT = { county = { same_realm = ROOT } }
+						}
+					}
+				}
+			}
+			random_realm_title = {
+				location = {
+					random_neighbor_province = {
+						limit = {
+							NOT = { county = { same_realm = ROOT } }
+						}
+						owner = {
+							top_liege = {
+								log = "Debug: The [This.GetInsultAdjective] [This.GetBestName] ([This.GetID])"
+								save_event_target_as = target_enemy_schmuck
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		FROMFROM = {
+			letter_event = { id = mmc.101 }
+		}
+	}
+}
+
+letter_event = { # Used to notify player of start of whatever event chain
+	id = mmc.101
+	is_triggered_only = yes # fire from event mmc.100
+	border = "GFX_event_letter_frame_war"
+	desc = EVTDESC_MMC_100 # Check key for this, GetInsultNoun seems to be screwy
+	# Stack when fired by title grant
+	# This - title granter
+	# ROOT - title granter
+	# FROM - title holder
+	# FROMFROM - title holder
+	# FROMFROMFROM - title granter
+	# target_enemy_schmuck - random shmuck
+	
+	trigger = {
+		FROM = {
+			has_minor_title = title_mmc_marquis_dornish_marshes
+		}
+	}
+	
+	immediate = {
+		log = "Debug: event mmc.101"
+		print_scope_effect = yes
+	}
+	
+	option = {
+		name = {
+			text = EVTOPT_OK_MMC_100
+			trigger = {
+				NOT = { has_house_words_trigger = yes }
+			}
+		}
+		name = {
+			text = EVTOPTGETHOUSEWORDS
+			trigger = {
+				has_house_words_trigger = yes
+			}
+		}
+		custom_tooltip = {
+			text = TOOLTIPmmcOK.10
+		}
+	}
+}
+
+province_event = { # Fortifications are built
+	id = mmc.110
+	hide_window = yes
+	
+	trigger = {
+		owner = { has_minor_title = title_mmc_marquis_dornish_marshes }
+		NOT = { has_province_modifier = fortified_marches }
+	}
+	
+	mean_time_to_happen = {
+		months = 24
+	}
+	
+	option = {
+		owner = {
+			character_event = { id = mmc.111 }
+		}
+	}
+
+}
+
+province_event = { # Ping to province owner to get correct from scoping
+	id = mmc.111
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		has_minor_title = title_mmc_marquis_dornish_marshes
+	}
+	
+	option = {
+		top_liege = {
+			letter_event = { id = mmc.115 }
+		}
+	}
+
+}
+
+letter_event = { # Liege notification event for adding fortifications
+	id = mmc.115
+	border = "GFX_event_letter_frame_war"
+	desc = EVTDESC_MMC_115
+	is_triggered_only = yes
+	
+	trigger = {
+		FROM = {
+			has_minor_title = title_mmc_marquis_dornish_marshes
+			is_liege_or_above = ROOT
+		}
+	}
+	
+	option = {
+		name = {
+			text = EVTOPT_OK_MMC_100
+			trigger = {
+				NOT = { has_house_words_trigger = yes }
+			}
+		}
+		name = {
+			text = EVTOPTGETHOUSEWORDS
+			trigger = {
+				has_house_words_trigger = yes
+			}
+		}
+		FROMFROM = {
+			add_province_modifier = { modifier = fortified_marches duration = -1 }
+		}
+	}
+
+}
+
+character_event = {
+	id = mmc.999
+	is_triggered_only = yes
+	hide_window = yes
+	
+	option = {
+		print_scope_effect = yes
+	}
+}
