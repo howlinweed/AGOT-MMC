@@ -1,3 +1,4 @@
+# Audax Validator EnableCommentMetadata
 namespace = mmc
 
 character_event = { #Event to convert a holding into a military command
@@ -225,12 +226,12 @@ character_event = { #This event converts a non-historical military command into 
 						limit = { primary_title = { event_target:target_unmake_military = { title = PREV } } }
 						if = {
 							limit = { event_target:target_unmake_military = { holding_type = castle } }
-							set_government_type = feudal
+							set_government_type = feudal_government
 							event_target:target_unmake_military = { succession = primogeniture }
 						}
 						else = {
-							set_government_type = republic
-							event_target:target_unmake_military = { succession = elective }
+							set_government_type = republic_government
+							event_target:target_unmake_military = { succession = open_elective }
 						}
 					}
 					recalc_succession = yes
@@ -274,65 +275,83 @@ character_event = { # Used to ping to the granter
 		print_scope_effect = yes
 		if = { # Try and find some random schmuck we can hate on
 			limit = {
-				any_realm_title = {
-					location = {
+				any_playable_ruler = {
+					NOR = {
+						culture = FROMFROM
+						culture = ROOT
+						same_realm = FROMFROM
+					}
+					any_demesne_province = {
 						any_neighbor_province = {
-							NOR = {
-								county = { same_realm = ROOT }
-								culture = ROOT
+							ROOT = {
+								any_realm_province = {
+									province = PREVPREV
+								}
 							}
 						}
 					}
 				}
 			}
-			random_realm_title = {
-				location = {
-					random_neighbor_province = {
-						limit = {
-							NOR = {
-								county = { same_realm = ROOT }
-								culture = ROOT
-							}
-						}
-						owner = {
-							top_liege = {
-								log = "Debug: The [This.GetInsultAdjective] [This.GetBestName] ([This.GetID])"
-								save_event_target_as = target_enemy_schmuck
+			random_playable_ruler = {
+				limit = {
+					NOR = {
+						culture = FROMFROM
+						culture = ROOT
+						same_realm = FROMFROM
+					}
+					any_demesne_province = {
+						any_neighbor_province = {
+							ROOT = {
+								any_realm_province = {
+									province = PREVPREV
+								}
 							}
 						}
 					}
 				}
+				log = "Debug: The [This.GetInsultAdjective] [This.GetBestName] ([This.GetID])"
+				top_liege = { save_event_target_as = target_enemy_schmuck }
 			}
 		}
 		else_if = { # Try and find some random schmuck we can hate on
 			limit = {
-				any_realm_title = {
-					location = {
+				any_playable_ruler = {
+					NOT = { same_realm = FROMFROM }
+					any_demesne_province = {
 						any_neighbor_province = {
-							NOT = { county = { same_realm = ROOT } }
-						}
-					}
-				}
-			}
-			random_realm_title = {
-				location = {
-					random_neighbor_province = {
-						limit = {
-							NOT = { county = { same_realm = ROOT } }
-						}
-						owner = {
-							top_liege = {
-								log = "Debug: The [This.GetInsultAdjective] [This.GetBestName] ([This.GetID])"
-								save_event_target_as = target_enemy_schmuck
+							ROOT = {
+								any_realm_province = {
+									province = PREVPREV
+								}
 							}
 						}
 					}
 				}
+			}
+			random_playable_ruler = {
+				limit = {
+					NOT = { same_realm = FROMFROM }
+					any_demesne_province = {
+						any_neighbor_province = {
+							ROOT = {
+								any_realm_province = {
+									province = PREVPREV
+								}
+							}
+						}
+					}
+				}
+				log = "Debug: The [This.GetInsultAdjective] [This.GetBestName] ([This.GetID])"
+				top_liege = { save_event_target_as = target_enemy_schmuck }
 			}
 		}
 	}
 	
 	option = {
+		add_character_modifier = {
+			modifier = marquis_modifier
+			duration = -1
+		}
 		FROMFROM = {
 			letter_event = { id = mmc.101 }
 		}
@@ -343,7 +362,7 @@ letter_event = { # Used to notify player of start of whatever event chain
 	id = mmc.101
 	is_triggered_only = yes # fire from event mmc.100
 	border = "GFX_event_letter_frame_war"
-	desc = EVTDESC_MMC_100 # Check key for this, GetInsultNoun seems to be screwy
+	desc = EVTDESC_MMC_101 # Check key for this, GetInsultNoun seems to be screwy
 	# Stack when fired by title grant
 	# This - title granter
 	# ROOT - title granter
@@ -365,7 +384,7 @@ letter_event = { # Used to notify player of start of whatever event chain
 	
 	option = {
 		name = {
-			text = EVTOPT_OK_MMC_100
+			text = EVTOPT_OK_MMC_101
 			trigger = {
 				NOT = { has_house_words_trigger = yes }
 			}
@@ -387,12 +406,34 @@ province_event = { # Fortifications are built
 	hide_window = yes
 	
 	trigger = {
-		owner = { has_minor_title = title_mmc_marquis_dornish_marshes }
 		NOT = { has_province_modifier = fortified_marches }
+		owner = {
+			OR = {
+				has_character_modifier = marquis_modifier
+				any_liege = { has_character_modifier = marquis_modifier }
+			}
+		}
 	}
 	
 	mean_time_to_happen = {
 		months = 24
+	}
+	
+	immediate = {
+		owner = {
+			if = {
+				limit = {
+					has_character_modifier = marquis_modifier
+				}
+				save_event_target_as = target_marquis
+			}
+			else = {
+				any_liege = {
+					limit = { has_character_modifier = marquis_modifier }
+					save_event_target_as = target_marquis
+				}
+			}
+		}
 	}
 	
 	option = {
@@ -402,40 +443,160 @@ province_event = { # Fortifications are built
 	}
 
 }
-
-province_event = { # Ping to province owner to get correct from scoping
+character_event = { # Notify title holder
 	id = mmc.111
-	hide_window = yes
-	is_triggered_only = yes
+	picture = GFX_evt_son_asking_father
+	is_triggered_only = yes # fired from event mmc.110
+	show_root = yes
+	
+	# Stack
+	# This - province owner
+	# Root - province owner
+	# From - province
+	# target_marquis - marquis - duh!
+	
+	desc = { # I'm the Marquis
+		trigger = {
+			NOT = { event_target:target_marquis = { character = ROOT } }
+		}
+		text = EVTDESC_MMC_111.1
+	}
+	desc = { # I'm not the Marquis
+		trigger = {
+			event_target:target_marquis = { character = ROOT }
+		}
+		text = EVTDESC_MMC_111.2
+	}
 	
 	trigger = {
-		has_minor_title = title_mmc_marquis_dornish_marshes
+		FROM = {
+			holder_scope = {
+				character = ROOT
+			}
+		}
+	}
+	
+	option = { # I'm the Marquis and this is my demesne so I should notify my liege
+		name = EVTOPT_A_MMC_111
+		trigger = {
+			event_target:target_marquis = { character = ROOT }
+		}
+		FROM = {
+			add_province_modifier = { modifier = fortified_marches duration = -1 }
+		}
+		liege = {
+			hidden_tooltip = {
+				ROOT = { character_event = { id = mmc.113 } }
+			}
+		}
+	}
+	
+	option = { # My province has been upgraded and I should notify the Marquis about this
+		name = EVTOPT_B_MMC_111
+		trigger = {
+			NOT = { event_target:target_marquis = { character = ROOT } }
+		}
+		FROM = {
+			add_province_modifier = { modifier = fortified_marches duration = -1 }
+		}
+		event_target:target_marquis = {
+			tooltip = { show_portrait = yes }
+			letter_event = { id = mmc.112 }
+		}
+	}
+
+}
+
+letter_event = { # Notify Marquis that his/her hard work has paid off in my province
+	id = mmc.112
+	border = "GFX_event_letter_frame_war"
+	desc = EVTDESC_MMC_112
+	is_triggered_only = yes # fired from event mmc.111
+	
+	# Stack
+	# This - marquis
+	# Root - marquis
+	# From - province owner
+	# FromFrom - province
+	# target_marquis - marquis - duh!
+	
+	trigger = {
+		has_character_modifier = marquis_modifier
 	}
 	
 	option = {
-		top_liege = {
+		name = EVTOPT_OK_MMC_112
+		liege = {
+			tooltip = { show_portrait = yes }
 			letter_event = { id = mmc.115 }
 		}
 	}
 
 }
 
+character_event = { # Used to get the stack right so we can reuse mmc.115, I guess
+	id = mmc.113
+	is_triggered_only = yes # fired by event mmc.
+	hide_window = yes
+	
+	# Stack
+	# This - province owner/marquis
+	# Root - province owner/marquis
+	# From - province owner/marquis
+	# FromFrom - province
+	# target_marquis - marquis - duh!
+	
+	trigger = {
+		has_character_modifier = marquis_modifier
+	}
+	
+	option = {
+		liege = {
+			letter_event = { id = mmc.115 }
+		}
+	}
+}
+
 letter_event = { # Liege notification event for adding fortifications
 	id = mmc.115
 	border = "GFX_event_letter_frame_war"
-	desc = EVTDESC_MMC_115
-	is_triggered_only = yes
+	is_triggered_only = yes # fired from event mmc.112 or mmc.113
+	
+	# Stack when fired from mmc.112
+	# This - liege of marquis
+	# Root - liege of marquis
+	# From - marquis
+	# FromFrom - province owner
+	# FromFromFrom - province
+	# target_marquis - marquis - duh!
+	
+	# Stack when fired from mmc.113
+	# This - liege of marquis
+	# Root - liege of marquis
+	# From - province owner/marquis
+	# FromFrom - province owner/marquis
+	# FromFromFrom - province
+	# target_marquis - marquis - duh!
+	
+	desc = { # Marquis demesne title
+		trigger = { event_target:target_marquis = { character = FROMFROM } }
+		text = EVTDESC_MMC_115.demesne
+	}
+	desc = { # Marquis realm title
+		trigger = { NOT = { event_target:target_marquis = { character = FROMFROM } } }
+		text = EVTDESC_MMC_115.realm
+	}
 	
 	trigger = {
 		FROM = {
-			has_minor_title = title_mmc_marquis_dornish_marshes
+			has_character_modifier = marquis_modifier
 			is_liege_or_above = ROOT
 		}
 	}
 	
 	option = {
 		name = {
-			text = EVTOPT_OK_MMC_100
+			text = EVTOPT_OK_MMC_115
 			trigger = {
 				NOT = { has_house_words_trigger = yes }
 			}
@@ -446,13 +607,18 @@ letter_event = { # Liege notification event for adding fortifications
 				has_house_words_trigger = yes
 			}
 		}
-		FROMFROM = {
+		FROMFROMFROM = {
 			add_province_modifier = { modifier = fortified_marches duration = -1 }
+		}
+		if = {
+			limit = { NOT = { event_target:target_marquis = { character = FROMFROM } } }
+			FROMFROM = { tooltip = { show_portrait = yes } }
 		}
 	}
 
 }
 
+# Audax Validator "." Ignore_NEXT
 character_event = {
 	id = mmc.999
 	is_triggered_only = yes

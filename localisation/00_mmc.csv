@@ -21,7 +21,17 @@ title_mmc_marquis_dornish_marshes;Marquis of The Dornish Marches;FRENCH;GERMAN;;
 title_mmc_marquis_dornish_marshes_desc;The Marquis is responsible for defending a realm's border provinces.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
 fortified_marches;Fortified Marches;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
 fortified_marches_desc;This province has been fortified with trenches and other anachronistic items.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
-EVTDESC_MMC_100;To the [Root.GetComplimentAdjective] [Root.GetTitledFirstName],\n\nMy [Root.GetLordLady], I dutifully accept the responsibility of defending [Root.PrimaryTitle.GetBaseName]. Those [target_enemy_schmuck.GetInsultAdjective] [target_enemy_schmuck.PrimaryTitle.GetAdjective] [target_enemy_schmuck.GetInsultNoun] will never overcome the defensives of [From.PrimaryTitle.GetBaseName].\n\nSigned,\n[From.GetTitledName];FRENCH;GERMAN;;SPANISH;;;;;;;;;x
-EVTOPT_OK_MMC_100;Excellent.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
-TOOLTIPmmcOK.10;[From.GetTitledFirstName] will start working on improving the defenses in [From.GetHerHis] realm.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
-EVTDESC_MMC_115;To the [Root.GetComplimentAdjective] [Root.GetTitledFirstName],\n\nMy [Root.GetLordLady], after many months we have finished the fortifications in [FromFrom.GetName]. We are stronger and more prepared than ever.\n\nSigned,\n[From.GetTitledName];FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTDESC_MMC_101;To the [Root.GetComplimentAdjective] [Root.GetTitledFirstName],\nMy [Root.GetLordLady], I dutifully accept the responsibility of defending [Root.PrimaryTitle.GetBaseName]. Those [target_enemy_schmuck.GetInsultAdjective] [target_enemy_schmuck.PrimaryTitle.GetAdjective] [target_enemy_schmuck.GetInsultNoun] will never overcome the defensives of [From.PrimaryTitle.GetBaseName].\n\nSigned,\n[From.GetTitledName];FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTOPT_OK_MMC_101;Excellent.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+TOOLTIPmmcOK.10;[From.GetTitledFirstNameNoRegnal] will start working on improving the defenses in [From.GetHerHis] realm.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+marquis_modifier;Marquis of [This.PrimaryTitle.GetBaseName];FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+marquis_modifier_desc;The Marquis of [This.PrimaryTitle.GetBaseName] is responsible for defending a realm's border provinces.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTDESC_MMC_111.1;[target_marquis.GetTitledFirstNameNoRegnal]'s hard work has finally paid off and the fortifications in [From.GetName] have been completed. My castle will stand as an impenetrable bulwark against any who'd dare invade [Root.TopLiege.PrimaryTitle.GetBaseName].;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTDESC_MMC_111.2;My hard work has finally paid off and the fortifications in [From.GetName] have been completed. My castle will stand as an impenetrable bulwark against any who'd dare invade [Root.TopLiege.PrimaryTitle.GetBaseName].;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTOPT_A_MMC_111;I should notify my liege immediately.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTOPT_B_MMC_111;I should notify [Root.TopLiege.GetTitledFirstNameNoRegnal]'s Marquis, [target_marquis.GetTitledFirstNameNoRegnal].;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTDESC_MMC_112;To the [Root.GetComplimentAdjective] [Root.GetTitledFirstName],\nMy [Root.GetLordLady], after many months we have finished the fortifications in [FromFrom.GetName]. We are stronger and more prepared than ever.\n\nSigned,\n[From.GetTitledName];FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTOPT_OK_MMC_112;Excellent. I'm sure [Root.Liege.GetTitledFirstNameNoRegnal] will be pleased to hear this.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTDESC_MMC_115.demesne;To the [Root.GetComplimentAdjective] [Root.GetTitledFirstName],\nMy [Root.GetLordLady], after many months I have finished the fortifications in [FromFromFrom.GetName]. We are stronger and more prepared than ever.\n\nSigned,\n[From.GetTitledName];FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTDESC_MMC_115.realm;To the [Root.GetComplimentAdjective] [Root.GetTitledFirstName],\nMy [Root.GetLordLady], after many months [FromFrom.GetTitledFirstNameNoRegnal] has, under my direct supervision, finished the fortifications in [FromFromFrom.GetName]. We are stronger and more prepared than ever.\n\nSigned,\n[From.GetTitledName];FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+EVTOPT_OK_MMC_115;Excellent.;FRENCH;GERMAN;;SPANISH;;;;;;;;;x

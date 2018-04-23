@@ -1,5 +1,10 @@
 fortified_marches = {
 	fort_level = 2.5
 	garrison_size = 0.33
-	icon = 1
+	icon = 9
+}
+marquis_modifier = {
+	monthly_character_prestige = 0.2
+	liege_opinion = 5
+	icon = 143
 }
